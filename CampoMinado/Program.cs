@@ -63,21 +63,82 @@ namespace CampoMinado
 
             }
 
-            // imprimindo o campo definido
-             
-            Console.WriteLine("Campo criado:");
-           
-            for(int i=0; i < 5; i++)
-            {
-                Console.WriteLine("");
 
+            //---------POPULA OS VIZINHOS DAS BOMBAS DA MATRIZ MINA ------
+
+            for (int i = 0; i < 5; i++)
+            {
                 for (int j = 0; j < 5; j++)
                 {
-                    Console.Write(mina[i,j]+" ");
+                    // Encontrando onde está a bomba
+                    if (mina[i, j] == "*")
+                    {
+                        // Definindo os vizinhos da bomba (onde será acrescido 1)
+
+                        int[] a = new int[3];// valores para linha dos vizinhos
+                        int[] b = new int[3];// valores para coluna dos vizinhos
+
+                        a[0] = i; a[1] = i + 1; a[2] = i - 1;
+                        b[0] = j; b[1] = j + 1; b[2] = j - 1;
+
+                        /* (i , j) - é o local da bomba (não acrescenta)
+                         *
+                         * vizinhos da bomba (onde acrescenta 1):
+                         * 
+                         * (i , j+1)
+                         * (i , j-1)
+                         * 
+                         * (i+1 , j)
+                         * (i+1 , j+1)
+                         * (i+1 , j-1)
+                         * 
+                         * (i-1 , j)
+                         * (i-1 , j+1)
+                         * (i-1 , j-1)
+                         * 
+                         */
+
+                        // Fazendo a combinação dos valores de linha e coluna para listar os vizinhos
+                        for (int x = 0; x < 3; x++)
+                        {
+                            for (int y = 0; y < 3; y++)
+                            {
+
+                                if (a[x] == i && b[y] == j)
+                                {
+                                    //mesma linha, mesma coluna (não acrescenta)
+                                }
+                                else if (a[x] < 5 && b[y] < 5 && a[x] >= 0 && b[y] >= 0)
+                                {
+                                    //se os valores de linha e coluna estiverem entre 0 e 5, acessa a função Soma
+                                    Soma(a[x], b[y]);
+                                }
+
+
+                            }
+                        }
+
+                    }
+
                 }
             }
-            Console.WriteLine();
-            
+
+            // imprimindo o campo definido
+
+           Console.WriteLine();
+           Console.WriteLine("Campo criado:");
+
+           for(int i=0; i < 5; i++)
+           {
+               Console.WriteLine("");
+
+               for (int j = 0; j < 5; j++)
+               {
+                   Console.Write(mina[i,j]+" ");
+               }
+           }
+           Console.WriteLine(); 
+           
 
 
         }
@@ -106,6 +167,18 @@ namespace CampoMinado
             Console.WriteLine("   ╚═══════════════╝ ");
             Console.WriteLine("               0 pts");
 
+
+        }
+
+        //-----------FUNÇÃO QUE SOMA 1 NOS VIZINHOS DA BOMBA------------------------
+        static void Soma(int x, int y)
+        {
+            //se o vizinho não for uma bomba, pode acrescentar 1
+            if (mina[x, y] != "*")
+            {
+                int mod1 = int.Parse(mina[x, y]) + 1;
+                mina[x, y] = mod1.ToString(); // converte inteiro para string
+            }
 
         }
     }
