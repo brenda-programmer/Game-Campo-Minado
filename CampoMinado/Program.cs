@@ -123,7 +123,7 @@ namespace CampoMinado
                 }
             }
 
-            // imprimindo o campo definido
+            /* imprimindo o campo definido
 
            Console.WriteLine();
            Console.WriteLine("Campo criado:");
@@ -137,8 +137,15 @@ namespace CampoMinado
                    Console.Write(mina[i,j]+" ");
                }
            }
-           Console.WriteLine(); 
-           
+           Console.WriteLine(); */
+
+
+
+            //Apaga o que tiver na tela para iniciar o jogo
+            Console.Clear();
+
+            //Função que inicia o jogo para o usuário
+            Jogar();
 
 
         }
@@ -179,6 +186,89 @@ namespace CampoMinado
                 int mod1 = int.Parse(mina[x, y]) + 1;
                 mina[x, y] = mod1.ToString(); // converte inteiro para string
             }
+
+        }
+
+        //-----------FUNÇÃO ONDE O USUÁRIO JOGA O CAMPO MINADO-----------------------------------------
+        static void Jogar()
+        {
+            string escolha = "";
+            int pontos = 0;
+
+            // campo inicial antes de entrar no while
+            CampoInicial();
+
+            //entra no while e mostra o campo atualizado conforme a escolha do usuário
+            while (escolha != "*")
+            {
+                pontos++;
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("");
+                Console.WriteLine("JOGAR: ");
+                Console.WriteLine("");
+
+                Console.WriteLine("Digite a coordenada desejada x,y ");
+                Console.Write(">> ");
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                string[] temp = Console.ReadLine().Split(',');
+
+                int x = int.Parse(temp[0]) - 1;
+                int y = int.Parse(temp[1]) - 1;
+
+                // se o usuário informar coordenada já informada antes, o ponto recebido será anulado
+                if (campo[x, y] != "#")
+                {
+                    pontos--;
+                }
+
+                campo[x, y] = mina[x, y];
+                escolha = mina[x, y];
+
+                Console.Clear(); // apaga o que estava na tela e mostra o campo atualizado
+
+                Console.ForegroundColor = ConsoleColor.White;
+
+                Console.WriteLine("▒▒▒▒▒ CAMPO MINADO ▒▒▒▒▒ ");
+                Console.WriteLine("");
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.WriteLine("     1  2  3  4  5");
+                Console.WriteLine("   ╔═══════════════╗ ");
+
+                for (int k = 0; k < 5; k++)
+                {
+                    Console.Write(" " + (k + 1) + " ║");
+
+                    for (int j = 0; j < 5; j++)
+                    {
+                        if (campo[k, j] != "#")
+                        {
+                            Console.ForegroundColor = ConsoleColor.Green;
+                        }
+                        if (campo[k, j] == "*")
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            pontos--;
+                        }
+                        Console.Write(" " + campo[k, j] + " ");
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                    }
+                    Console.ForegroundColor = ConsoleColor.DarkGreen;
+                    Console.Write("║");
+                    Console.WriteLine("");
+                }
+                Console.WriteLine("   ╚═══════════════╝ ");
+                Console.WriteLine("               " + pontos + " pts");
+
+
+            }
+
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("");
+            Console.WriteLine("BOMBA!!! Tente novamente ");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("");
+            Console.WriteLine("PONTUAÇÃO TOTAL: " + pontos + " pts");
 
         }
     }
